@@ -1,11 +1,7 @@
-from curses import resetty
-from distutils.cmd import Command
-from socket import NI_NUMERICHOST
-from tkinter import *
 from math import *
-from turtle import clear, reset, width
-from unittest import result
-from webbrowser import get
+from tkinter import *
+from turtle import clear
+
 from colorama import init, Fore
 
 raiz = Tk()
