@@ -22,6 +22,9 @@ git add README.md archivos_de_codigo
 ### Para mirar los cambios pendientes
 git status
 
+# Traerse nuevos cambios de la nube
+git pull
+
 ### Para registrar/comitear nuevos cambios con un comentario significativo sobre lo que se ha hecho.
 git commit -m "Renombrando archivo leeme a readme"
 
