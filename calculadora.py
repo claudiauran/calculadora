@@ -12,9 +12,13 @@ raiz.config(relief="groove")  # borde especial
 # Variables importantes
 resetear_pantalla = False  # Bool, para borrar todo lo que haya en pantalla
 operacion = StringVar()  # String, para guardar la operacion aritmetica (suma, resta, division)
-operador = StringVar()  # String, para guardar el simbolo de la operacion aritmetica
+variable_pantalla_operaciones = StringVar()  # String, la operacion enviada a la pantalla principal
+variable_pantalla_resultados = StringVar()  # Solamente para mostrar los resultados en la pantalla de resultados
+
+operador = ""  # String, para guardar el simbolo de la operacion aritmetica
+numero_1 = 0
+numero_2 = 0
 resultado = 0  # Float, el resultado numerico de las operaciones aritmeticas
-numero_pulsado = StringVar()  # String, la operacion enviada a la pantalla principal
 
 input_text = StringVar()  # String, entrada de texto
 alto_boton = 1
@@ -48,10 +52,15 @@ miFrame.config(bd=35)  # cambio del grosor del borde
 miFrame.config(relief="groove")  # borde especial
 miFrame.config(cursor="pirate")
 
-pantalla = Entry(miFrame, textvariable=numero_pulsado)  # esto es lo que hace que funcionen los botones
+pantalla_resultados = Entry(miFrame, textvariable=variable_pantalla_resultados)  # esto es lo que hace que funcionen los botones
 # columnspan me permite que se ubiquen los numeros a lo ancho de la caja
-pantalla.grid(row=0, column=1, padx=5, pady=5, rowspan=2, columnspan=4)
-pantalla.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
+pantalla_resultados.grid(row=1, column=1, padx=5, pady=5, rowspan=1, columnspan=4)
+pantalla_resultados.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
+
+pantalla_operaciones = Entry(miFrame, textvariable=variable_pantalla_operaciones)  # esto es lo que hace que funcionen los botones
+# columnspan me permite que se ubiquen los numeros a lo ancho de la caja
+pantalla_operaciones.grid(row=2, column=1, padx=5, pady=5, rowspan=1, columnspan=4)
+pantalla_operaciones.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
 
 # PANTALLA______________________________________________________________________
 print("Interface ok")
@@ -61,30 +70,35 @@ print("miframe,perfeto ,teclado pulsado perfecto")
 # FUNCIONES:......................................................................
 
 def boton_presionado(caracter):
-    global operador
-    operador = operador + str(caracter)
-    input_text.set(operador)
-    numero_pulsado.set(numero_pulsado.get() + caracter)
+    if caracter in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+        input_text.set(caracter)
+        variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
+    elif caracter in ["/", "x", "+", "-", "√", ",", "%", "**", "(", ")"]:
+        input_text.set(caracter)
+        variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
+        # if operador:
+        # operador = caracter
 
-
-print("numero pulsado perfecto")
+    elif caracter == "⌫":
+        borrar_digito()
+    elif caracter == "=":
+        variable_pantalla_resultados.set(variable_pantalla_operaciones.get())
+        variable_pantalla_operaciones.set("")
 
 
 # BORRAR DIGITO, DEL:
 # Borra el digito mas a la derecha
 def borrar_digito():
-    global boton_presionado
-    numero_pulsado.set(numero_pulsado.get()[:-1])
+    variable_pantalla_operaciones.set(variable_pantalla_operaciones.get()[:-1])
 
 
 # LIMPIAR PANTALLA:
 def reset_pantalla():
     global operacion
-    global boton_presionado
     global resultado
-    boton_presionado = ""
     operacion = 0
-    numero_pulsado.set("0")
+    variable_pantalla_operaciones.set("0")
+    variable_pantalla_resultados.set("0")
 
 
 print("funcion clear ok ")
@@ -92,30 +106,30 @@ print("funcion clear ok ")
 
 # FUNCION RAIZ CUADRADA
 def raiz_cuadrada(numero):
-    global numero_pulsado
+    global variable_pantalla_operaciones
     global resultado
     try:  # si no se efectua la operacion se reestablceran las variables y mostrara error
-        if numero_pulsado != "" and abs(float(numero_pulsado.get())) == abs(float(numero_pulsado)):
-            numero_pulsado = sqrt(float(numero_pulsado))
-            numero_pulsado.set(numero_pulsado)
+        if variable_pantalla_operaciones != "" and abs(float(variable_pantalla_operaciones.get())) == abs(float(variable_pantalla_operaciones)):
+            variable_pantalla_operaciones = sqrt(float(variable_pantalla_operaciones))
+            variable_pantalla_operaciones.set(variable_pantalla_operaciones)
         else:
             resultado = sqrt(resultado)
-            numero_pulsado.set(resultado)
+            variable_pantalla_operaciones.set(resultado)
     except:
         resetear_pantalla()
-        numero_pulsado.set("error")
-        numero_pulsado.set(resultado)
+        variable_pantalla_operaciones.set("error")
+        variable_pantalla_operaciones.set(resultado)
 
 
 # command=lambda:nu(num="=",operacion="resultado"(nu.get()))) IGUAL
 def enrutar_operacion():
     global resultado
     global operacion
-    global numero_pulsado
+    global variable_pantalla_operaciones
     global valor_rest
-    numero_pulsado.set(resultado + float(numero_pulsado.get()))
+    variable_pantalla_operaciones.set(resultado + float(variable_pantalla_operaciones.get()))
 
-    valor = float(numero_pulsado.get())
+    valor = float(variable_pantalla_operaciones.get())
     if operador == "+":
         resultado = resultado + valor
 
@@ -137,106 +151,90 @@ def enrutar_operacion():
         try:
             resultado = valor
         except:
-            numero_pulsado.set(numero_pulsado.get())
+            variable_pantalla_operaciones.set(variable_pantalla_operaciones.get())
         try:
             operacion = valor_rest
-            if numero_pulsado == "":
-                numero_pulsado = resultado
+            if variable_pantalla_operaciones == "":
+                variable_pantalla_operaciones = resultado
                 calculo = (operacion)
-                numero_pulsado.set(resultado)
+                variable_pantalla_operaciones.set(resultado)
         except:
-            numero_pulsado.set("error")
-            numero_pulsado = 0
+            variable_pantalla_operaciones.set("error")
+            variable_pantalla_operaciones = 0
             resultado = 0
             valor_rest = ""
             operacion = ""
-            numero_pulsado.set(resultado)
+            variable_pantalla_operaciones.set(resultado)
 
 
 # .......................................................................................................
 # -BOTONES EN PANTALLA:
-# FILA 3
-boton_bor = Button(miFrame, text="C", width=3, height=alto_boton, command=lambda: reset_pantalla())
-boton_bor.grid(row=3, column=1)
-boton_Div = Button(miFrame, text="/", width=3, height=alto_boton,
-                   command=lambda: boton_presionado(caracter=numero_pulsado.get(), operacion="divide"))
-boton_Div.grid(row=3, column=2)
-boton_Mult = Button(miFrame, text="x", width=3, height=alto_boton,
-                    command=lambda: boton_presionado(caracter="x",
-                                                     enrutar_operacion="multiplica"(numero_pulsado.get())))
-boton_Mult.grid(row=3, column=3)
-boton_sum = Button(miFrame, text="+", width=3, height=alto_boton,
-                   command=lambda: boton_presionado(caracter="+", enrutar_operacion="suma"(numero_pulsado.get)))
-boton_sum.grid(row=3, column=4)
-
-# fila 4
-boton7 = Button(miFrame, text="7", width=3, height=alto_boton, command=lambda: boton_presionado("7"))
-boton7.grid(row=4, column=1)  # row 2 fila 2 porque la anterior miFrame esta en fila auno
-boton8 = Button(miFrame, text="8", width=3, height=alto_boton, command=lambda: boton_presionado("8"))
-boton8.grid(row=4, column=2)
-boton9 = Button(miFrame, text="9", width=3, height=alto_boton, command=lambda: boton_presionado("9", ))
-boton9.grid(row=4, column=3)
-botonRest = Button(miFrame, text="-", width=3,
-                   command=lambda: boton_presionado(caracter="-", enrutar_operacion="resta"(numero_pulsado.get())))
-botonRest.grid(row=4, column=4)
-
-# fila 5__________________________________________________________________________________________
-
-boton4 = Button(miFrame, text=4, width=3, height=alto_boton, command=lambda: boton_presionado("4"))
-boton4.grid(row=5, column=1)
-boton5 = Button(miFrame, text="5", width=3, height=alto_boton, command=lambda: boton_presionado("5"))
-boton5.grid(row=5, column=2)
-boton6 = Button(miFrame, text="6", width=3, height=alto_boton, command=lambda: boton_presionado("6"))
-boton6.grid(row=5, column=3)
-
-boton_root = Button(miFrame, text="√", width=3, height=alto_boton,
-                    command=lambda: boton_presionado(caracter="√", enrutar_operacion="sqrt"(numero_pulsado.get)))
-boton_root.grid(row=5, column=4)
-
-# fila 6___________________________________________________________________________________________________________
-
+boton0 = Button(miFrame, text="0", width=3, height=alto_boton, command=lambda: boton_presionado("0"))
+boton0.grid(row=7, column=2)
 boton1 = Button(miFrame, text="1", width=3, height=alto_boton, command=lambda: boton_presionado("1"))
 boton1.grid(row=6, column=1)
 boton2 = Button(miFrame, text="2", width=3, height=alto_boton, command=lambda: boton_presionado("2"))
 boton2.grid(row=6, column=2)
 boton3 = Button(miFrame, text="3", width=3, height=alto_boton, command=lambda: boton_presionado("3"))
 boton3.grid(row=6, column=3)
+boton4 = Button(miFrame, text=4, width=3, height=alto_boton, command=lambda: boton_presionado("4"))
+boton4.grid(row=5, column=1)
+boton5 = Button(miFrame, text="5", width=3, height=alto_boton, command=lambda: boton_presionado("5"))
+boton5.grid(row=5, column=2)
+boton6 = Button(miFrame, text="6", width=3, height=alto_boton, command=lambda: boton_presionado("6"))
+boton6.grid(row=5, column=3)
+boton7 = Button(miFrame, text="7", width=3, height=alto_boton, command=lambda: boton_presionado("7"))
+boton7.grid(row=4, column=1)  # row 2 fila 2 porque la anterior miFrame esta en fila auno
+boton8 = Button(miFrame, text="8", width=3, height=alto_boton, command=lambda: boton_presionado("8"))
+boton8.grid(row=4, column=2)
+boton9 = Button(miFrame, text="9", width=3, height=alto_boton, command=lambda: boton_presionado("9", ))
+boton9.grid(row=4, column=3)
+
+boton_bor = Button(miFrame, text="C", width=3, height=alto_boton, command=lambda: reset_pantalla())
+boton_bor.grid(row=3, column=1)
+boton_Div = Button(miFrame, text="/", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="/"))
+boton_Div.grid(row=3, column=2)
+boton_Mult = Button(miFrame, text="x", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="x"))
+boton_Mult.grid(row=3, column=3)
+boton_sum = Button(miFrame, text="+", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="+"))
+boton_sum.grid(row=3, column=4)
+
+# fila 4
+botonRest = Button(miFrame, text="-", width=3, command=lambda: boton_presionado(caracter="-"))
+botonRest.grid(row=4, column=4)
+
+# fila 5__________________________________________________________________________________________
+boton_root = Button(miFrame, text="√", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="√"))
+boton_root.grid(row=5, column=4)
+
+# fila 6___________________________________________________________________________________________________________
 boton_coma = Button(miFrame, text=",", width=3, height=alto_boton, command=lambda: boton_presionado("."))
 boton_coma.grid(row=6, column=4)
 
 # fila 7 __________________________________________________________________________________________________________________
 
-boton_porc = Button(miFrame, text="%", width=3, height=alto_boton,
-                    command=lambda: boton_presionado(caracter="%",
-                                                     enrutar_operacion="porcentage"(numero_pulsado.get())))
+boton_porc = Button(miFrame, text="%", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="%"))
 boton_porc.grid(row=7, column=1)
-boton0 = Button(miFrame, text="0", width=3, height=alto_boton, command=lambda: boton_presionado("0"))
-boton0.grid(row=7, column=2)
-boton_bor = Button(miFrame, text="⌫", bg=color_boton, width=3, height=alto_boton,
-                   command=lambda: boton_presionado("⌫", enrutar_operacion="borrar_digito"(numero_pulsado.get())))
+boton_bor = Button(miFrame, text="⌫", bg=color_boton, width=3, height=alto_boton, command=lambda: boton_presionado(caracter="⌫"))
 boton_bor.grid(row=7, column=4)
-boton_exp = Button(miFrame, text="exp", width=3, height=alto_boton,
-                   command=lambda: boton_presionado(caracter="**", enrutar_operacion="potencia"(numero_pulsado.get)))
+boton_exp = Button(miFrame, text="exp", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="**"))
 boton_exp.grid(row=7, column=3)
 
 # fila 8___________________________________________________________________________________________________________________________
 
-boton_parent = Button(miFrame, text="(", width=3, height=alto_boton, command=lambda: boton_presionado("("))
-boton_parent.grid(row=8, column=1)
-boton0 = Button(miFrame, text=")", width=3, height=alto_boton, command=lambda: boton_presionado(")"))
-boton0.grid(row=8, column=2)
-boton_resultado = Button(miFrame, text="=", bg=color_boton, width=10, height=alto_boton,
-                         command=lambda: boton_presionado(caracter="=",
-                                                          enrutar_operacion="resultado"(numero_pulsado.get())))
+boton_parentesis_izq = Button(miFrame, text="(", width=3, height=alto_boton, command=lambda: boton_presionado("("))
+boton_parentesis_izq.grid(row=8, column=1)
+boton_parentesis_der = Button(miFrame, text=")", width=3, height=alto_boton, command=lambda: boton_presionado(")"))
+boton_parentesis_der.grid(row=8, column=2)
+boton_resultado = Button(miFrame, text="=", bg=color_boton, width=10, height=alto_boton, command=lambda: boton_presionado(caracter="="))
 boton_resultado.grid(row=8, column=3, columnspan=2)
 
 # fila 9 ___________________________________________________________________________________________________________
-
 barraHorizontal = Scrollbar(miFrame, relief="raised", bg=color_boton, width=25, orient="horizontal",
-                            command=pantalla.xview)
-barraHorizontal.grid(row=9, column=1, padx=6, pady=10, sticky="nsew", columnspan=4)
-pantalla["xscrollcommand"] = barraHorizontal.set
+                            command=pantalla_operaciones.xview)
+barraHorizontal.grid(row=10, column=1, padx=6, pady=10, sticky="nsew", columnspan=4)
 
+pantalla_operaciones["xscrollcommand"] = barraHorizontal.set
 print("teclado perfecto")
 
 raiz.mainloop()
