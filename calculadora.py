@@ -51,12 +51,14 @@ miFrame.config(bd=35)  # cambio del grosor del borde
 miFrame.config(relief="groove")  # borde especial
 miFrame.config(cursor="pirate")
 
-pantalla_resultados = Entry(miFrame, textvariable=variable_pantalla_resultados)  # esto es lo que hace que funcionen los botones
+pantalla_resultados = Entry(miFrame,
+                            textvariable=variable_pantalla_resultados)  # esto es lo que hace que funcionen los botones
 # columnspan me permite que se ubiquen los numeros a lo ancho de la caja
 pantalla_resultados.grid(row=1, column=1, padx=5, pady=5, rowspan=1, columnspan=4)
 pantalla_resultados.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
 
-pantalla_operaciones = Entry(miFrame, textvariable=variable_pantalla_operaciones)  # esto es lo que hace que funcionen los botones
+pantalla_operaciones = Entry(miFrame,
+                             textvariable=variable_pantalla_operaciones)  # esto es lo que hace que funcionen los botones
 # columnspan me permite que se ubiquen los numeros a lo ancho de la caja
 pantalla_operaciones.grid(row=2, column=1, padx=5, pady=5, rowspan=1, columnspan=4)
 pantalla_operaciones.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
@@ -120,15 +122,13 @@ def reset_pantalla():
     variable_pantalla_resultados.set("0")
 
 
-print("funcion clear ok ")
-
-
 # FUNCION RAIZ CUADRADA
 def raiz_cuadrada(numero):
     global variable_pantalla_operaciones
     global resultado
     try:  # si no se efectua la operacion se reestablceran las variables y mostrara error
-        if variable_pantalla_operaciones != "" and abs(float(variable_pantalla_operaciones.get())) == abs(float(variable_pantalla_operaciones)):
+        if variable_pantalla_operaciones != "" and abs(float(variable_pantalla_operaciones.get())) == abs(
+                float(variable_pantalla_operaciones)):
             variable_pantalla_operaciones = sqrt(float(variable_pantalla_operaciones))
             variable_pantalla_operaciones.set(variable_pantalla_operaciones)
         else:
@@ -140,50 +140,26 @@ def raiz_cuadrada(numero):
         variable_pantalla_operaciones.set(resultado)
 
 
-# command=lambda:nu(num="=",operacion="resultado"(nu.get()))) IGUAL
-def enrutar_operacion():
-    global resultado
-    global operacion
-    global variable_pantalla_operaciones
-    global valor_rest
-    variable_pantalla_operaciones.set(resultado + float(variable_pantalla_operaciones.get()))
+# Funcion para procesar una operacion dependiendo de los numeros que se le ingreses.
+# Entradas: numero_1 y/o numero_2. Se necesitan ambos para operaciones de dos operandos. Operacion a realizar.
+# Resultado: resultado de la operacion.
+def calcular_operacion(numero_1, numero_2, operacion):
+    resultado = 0
 
-    valor = float(variable_pantalla_operaciones.get())
     if operador == "+":
-        resultado = resultado + valor
-
+        resultado = numero_1 + numero_2
     elif operador == "-":
-        resultado = resultado - valor
-
+        resultado = numero_1 - numero_2
     elif operador == "*":
-        resultado = resultado * valor
-
+        resultado = numero_1 * numero_2
     elif operador == "/":
-        resultado = resultado / valor
-
+        resultado = numero_1 / numero_2
     elif operador == "**":
-        resultado = resultado ** valor
-
+        resultado = numero_1 ** numero_2
     elif operador == "%":
-        resultado = resultado % valor
+        resultado = numero_1 % numero_2
 
-        try:
-            resultado = valor
-        except:
-            variable_pantalla_operaciones.set(variable_pantalla_operaciones.get())
-        try:
-            operacion = valor_rest
-            if variable_pantalla_operaciones == "":
-                variable_pantalla_operaciones = resultado
-                calculo = (operacion)
-                variable_pantalla_operaciones.set(resultado)
-        except:
-            variable_pantalla_operaciones.set("error")
-            variable_pantalla_operaciones = 0
-            resultado = 0
-            valor_rest = ""
-            operacion = ""
-            variable_pantalla_operaciones.set(resultado)
+    return resultado
 
 
 # .......................................................................................................
@@ -234,7 +210,8 @@ boton_coma.grid(row=6, column=4)
 
 boton_porc = Button(miFrame, text="%", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="%"))
 boton_porc.grid(row=7, column=1)
-boton_bor = Button(miFrame, text="⌫", bg=color_boton, width=3, height=alto_boton, command=lambda: boton_presionado(caracter="⌫"))
+boton_bor = Button(miFrame, text="⌫", bg=color_boton, width=3, height=alto_boton,
+                   command=lambda: boton_presionado(caracter="⌫"))
 boton_bor.grid(row=7, column=4)
 boton_exp = Button(miFrame, text="exp", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="**"))
 boton_exp.grid(row=7, column=3)
@@ -245,7 +222,8 @@ boton_parentesis_izq = Button(miFrame, text="(", width=3, height=alto_boton, com
 boton_parentesis_izq.grid(row=8, column=1)
 boton_parentesis_der = Button(miFrame, text=")", width=3, height=alto_boton, command=lambda: boton_presionado(")"))
 boton_parentesis_der.grid(row=8, column=2)
-boton_resultado = Button(miFrame, text="=", bg=color_boton, width=10, height=alto_boton, command=lambda: boton_presionado(caracter="="))
+boton_resultado = Button(miFrame, text="=", bg=color_boton, width=10, height=alto_boton,
+                         command=lambda: boton_presionado(caracter="="))
 boton_resultado.grid(row=8, column=3, columnspan=2)
 
 # fila 9 ___________________________________________________________________________________________________________
@@ -254,6 +232,5 @@ barraHorizontal = Scrollbar(miFrame, relief="raised", bg=color_boton, width=25, 
 barraHorizontal.grid(row=10, column=1, padx=6, pady=10, sticky="nsew", columnspan=4)
 
 pantalla_operaciones["xscrollcommand"] = barraHorizontal.set
-print("teclado perfecto")
 
 raiz.mainloop()
