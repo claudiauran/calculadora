@@ -91,7 +91,10 @@ def boton_presionado(caracter):
         variable_pantalla_resultados.set(str(numero_1) + operador)
         variable_pantalla_operaciones.set("")
     elif caracter in ["=", ]:
-        numero_2 = float(variable_pantalla_operaciones.get())
+        if operador == "√":
+            numero_2 = 0
+        else:
+            numero_2 = float(variable_pantalla_operaciones.get())
 
         resultado = calcular_operacion(numero_1=numero_1, numero_2=numero_2, operacion=operador)
         numero_1 = resultado
@@ -120,24 +123,6 @@ def reset_pantalla():
     variable_pantalla_resultados.set("0")
 
 
-# FUNCION RAIZ CUADRADA
-def raiz_cuadrada(numero):
-    global variable_pantalla_operaciones
-    global resultado
-    try:  # si no se efectua la operacion se reestablceran las variables y mostrara error
-        if variable_pantalla_operaciones != "" and abs(float(variable_pantalla_operaciones.get())) == abs(
-                float(variable_pantalla_operaciones)):
-            variable_pantalla_operaciones = sqrt(float(variable_pantalla_operaciones))
-            variable_pantalla_operaciones.set(variable_pantalla_operaciones)
-        else:
-            resultado = sqrt(resultado)
-            variable_pantalla_operaciones.set(resultado)
-    except:
-        resetear_pantalla()
-        variable_pantalla_operaciones.set("error")
-        variable_pantalla_operaciones.set(resultado)
-
-
 # Funcion para procesar una operacion dependiendo de los numeros que se le ingreses.
 # Entradas: numero_1 y/o numero_2. Se necesitan ambos para operaciones de dos operandos. Operacion a realizar.
 # Resultado: resultado de la operacion.
@@ -156,6 +141,8 @@ def calcular_operacion(numero_1, numero_2, operacion):
         resultado = numero_1 ** numero_2
     elif operador == "%":
         resultado = numero_1 % numero_2
+    elif operador == "√":
+        resultado = sqrt(numero_1)
 
     return resultado
 
