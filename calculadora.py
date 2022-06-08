@@ -115,10 +115,17 @@ def borrar_digito():
 
 
 # LIMPIAR PANTALLA:
-def reset_pantalla():
+def reset_pantalla_c():
+    variable_pantalla_operaciones.set("0")
+
+
+def reset_pantalla_ce():
     global operacion
-    global resultado
+    global numero_1
+    global numero_2
     operacion = 0
+    numero_1 = 0
+    numero_2 = 0
     variable_pantalla_operaciones.set("0")
     variable_pantalla_resultados.set("0")
 
@@ -170,7 +177,7 @@ boton8.grid(row=4, column=2)
 boton9 = Button(miFrame, text="9", width=3, height=alto_boton, command=lambda: boton_presionado("9", ))
 boton9.grid(row=4, column=3)
 
-boton_bor = Button(miFrame, text="C", width=3, height=alto_boton, command=lambda: reset_pantalla())
+boton_bor = Button(miFrame, text="C", width=3, height=alto_boton, command=lambda: reset_pantalla_c())
 boton_bor.grid(row=3, column=1)
 boton_Div = Button(miFrame, text="/", width=3, height=alto_boton, command=lambda: boton_presionado(caracter="/"))
 boton_Div.grid(row=3, column=2)
@@ -207,9 +214,12 @@ boton_parentesis_izq = Button(miFrame, text="(", width=3, height=alto_boton, com
 boton_parentesis_izq.grid(row=8, column=1)
 boton_parentesis_der = Button(miFrame, text=")", width=3, height=alto_boton, command=lambda: boton_presionado(")"))
 boton_parentesis_der.grid(row=8, column=2)
-boton_resultado = Button(miFrame, text="=", bg=color_boton, width=10, height=alto_boton,
+boton_resultado = Button(miFrame, text="=", bg=color_boton, width=3, height=alto_boton,
                          command=lambda: boton_presionado(caracter="="))
-boton_resultado.grid(row=8, column=3, columnspan=2)
+boton_resultado.grid(row=8, column=3, columnspan=1)
+boton_ce = Button(miFrame, text="CE", bg=color_boton, width=3, height=alto_boton,
+                         command=lambda: reset_pantalla_ce())
+boton_ce.grid(row=8, column=4, columnspan=1)
 
 # fila 9 ___________________________________________________________________________________________________________
 barraHorizontal = Scrollbar(miFrame, relief="raised", bg=color_boton, width=25, orient="horizontal",
