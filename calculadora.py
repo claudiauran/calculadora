@@ -92,15 +92,13 @@ def boton_presionado(caracter):
         variable_pantalla_operaciones.set("")
     elif caracter in ["=", ]:
         numero_2 = float(variable_pantalla_operaciones.get())
-        if operador == "+":
-            resultado = numero_1 + numero_2
-            numero_1 = resultado
-            variable_pantalla_resultados.set(str(resultado))
-            variable_pantalla_operaciones.set("")
-            operador = ""
 
-        # variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
-        # cambiar_contenidos_pantalla()
+        resultado = calcular_operacion(numero_1=numero_1, numero_2=numero_2, operacion=operador)
+        numero_1 = resultado
+        variable_pantalla_resultados.set(str(resultado))
+        variable_pantalla_operaciones.set("")
+        operador = ""
+
     elif caracter == "⌫":
         borrar_digito()
     elif caracter == "=":
@@ -150,7 +148,7 @@ def calcular_operacion(numero_1, numero_2, operacion):
         resultado = numero_1 + numero_2
     elif operador == "-":
         resultado = numero_1 - numero_2
-    elif operador == "*":
+    elif operador in ["*", "x"]:
         resultado = numero_1 * numero_2
     elif operador == "/":
         resultado = numero_1 / numero_2
