@@ -75,6 +75,8 @@ def cambiar_contenidos_pantalla():
 
 
 def boton_presionado(caracter):
+    # TODO: quitar la dependencia en variables global.
+
     global numero_1
     global numero_2
     global operador
@@ -116,10 +118,12 @@ def borrar_digito():
 
 # LIMPIAR PANTALLA:
 def reset_pantalla_c():
+    # TODO: esta quedando un cero a la izquierda luego de usar este boton. Arreglar.
     variable_pantalla_operaciones.set("0")
 
 
 def reset_pantalla_ce():
+    # TODO: quitar la dependencia en variables global.
     global operacion
     global numero_1
     global numero_2
@@ -135,7 +139,8 @@ def reset_pantalla_ce():
 # Resultado: resultado de la operacion.
 def calcular_operacion(numero_1, numero_2, operacion):
     resultado = 0
-
+    # TODO: estamos recibiendo la variable "operacion", pero el if esta revisando la variable "operador".
+    #  Arreglar para que se utilice la variable correcta (la que se envia en el llamado de la funcion).
     if operador == "+":
         resultado = numero_1 + numero_2
     elif operador == "-":
@@ -197,6 +202,7 @@ boton_root.grid(row=5, column=4)
 # fila 6___________________________________________________________________________________________________________
 boton_coma = Button(miFrame, text=",", width=3, height=alto_boton, command=lambda: boton_presionado("."))
 boton_coma.grid(row=6, column=4)
+# TODO: como se quiere usar este boton? Pensar.
 
 # fila 7 __________________________________________________________________________________________________________________
 
