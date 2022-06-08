@@ -20,7 +20,6 @@ numero_1 = 0
 numero_2 = 0
 resultado = 0  # Float, el resultado numerico de las operaciones aritmeticas
 
-input_text = StringVar()  # String, entrada de texto
 alto_boton = 1
 color_boton = "GRAY"
 
@@ -68,22 +67,42 @@ print("miframe,perfeto ,teclado pulsado perfecto")
 
 
 # FUNCIONES:......................................................................
+def cambiar_contenidos_pantalla():
+    variable_pantalla_resultados.set(variable_pantalla_operaciones.get())
+    variable_pantalla_operaciones.set("")
+
 
 def boton_presionado(caracter):
+    global numero_1
+    global numero_2
+    global operador
+    global resultado
+
     if caracter in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-        input_text.set(caracter)
         variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
     elif caracter in ["/", "x", "+", "-", "√", ",", "%", "**", "(", ")"]:
-        input_text.set(caracter)
-        variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
-        # if operador:
-        # operador = caracter
+        if numero_1:
+            pass
+        else:
+            numero_1 = float(variable_pantalla_operaciones.get())
+        operador = caracter
+        variable_pantalla_resultados.set(str(numero_1) + operador)
+        variable_pantalla_operaciones.set("")
+    elif caracter in ["=", ]:
+        numero_2 = float(variable_pantalla_operaciones.get())
+        if operador == "+":
+            resultado = numero_1 + numero_2
+            numero_1 = resultado
+            variable_pantalla_resultados.set(str(resultado))
+            variable_pantalla_operaciones.set("")
+            operador = ""
 
+        # variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
+        # cambiar_contenidos_pantalla()
     elif caracter == "⌫":
         borrar_digito()
     elif caracter == "=":
-        variable_pantalla_resultados.set(variable_pantalla_operaciones.get())
-        variable_pantalla_operaciones.set("")
+        cambiar_contenidos_pantalla()
 
 
 # BORRAR DIGITO, DEL:
@@ -238,4 +257,3 @@ pantalla_operaciones["xscrollcommand"] = barraHorizontal.set
 print("teclado perfecto")
 
 raiz.mainloop()
-# numeroPulsado representa en la pantalla la operacion mediante input_text.set(aqui cadena de caracteres )
