@@ -23,25 +23,6 @@ resultado = 0  # Float, el resultado numerico de las operaciones aritmeticas
 alto_boton = 1
 color_boton = "GRAY"
 
-## Funciones importantes
-# OK enrutar_operacion
-
-# suma(numero1, numero2) # numero_n
-# resta(numero1, numero2)
-# multiplicacion(numero1, numero2)
-# division(divisor, dividendo)
-# porcentaje(numero)
-# OK raiz cuadrada(numero)
-# potencia(base, exponente)
-
-# coma
-# OK borrar digito
-# OK reset pantalla
-# parentesis
-# resultado
-# OK boton presionado(caracter) # numero, operacion
-
-
 miFrame = Frame(raiz)
 miFrame.pack()
 miFrame.config(bg="PINK")  # cambio el fondo de alrededor de donde se escribe
@@ -174,7 +155,7 @@ boton2 = Button(miFrame, text="2", width=3, height=alto_boton, command=lambda: b
 boton2.grid(row=6, column=2)
 boton3 = Button(miFrame, text="3", width=3, height=alto_boton, command=lambda: boton_presionado("3"))
 boton3.grid(row=6, column=3)
-boton4 = Button(miFrame, text=4, width=3, height=alto_boton, command=lambda: boton_presionado("4"))
+boton4 = Button(miFrame, text="4", width=3, height=alto_boton, command=lambda: boton_presionado("4"))
 boton4.grid(row=5, column=1)
 boton5 = Button(miFrame, text="5", width=3, height=alto_boton, command=lambda: boton_presionado("5"))
 boton5.grid(row=5, column=2)
