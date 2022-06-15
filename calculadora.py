@@ -54,18 +54,14 @@ miFrame.config(cursor="pirate")
 pantalla_resultados = Entry(miFrame,
                             textvariable=variable_pantalla_resultados)  # esto es lo que hace que funcionen los botones
 # columnspan me permite que se ubiquen los numeros a lo ancho de la caja
-pantalla_resultados.grid(row=1, column=1, padx=5, pady=5, rowspan=1, columnspan=4)
-pantalla_resultados.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
+pantalla_resultados.grid(row=1, column=1, padx=5, pady=0, rowspan=1, columnspan=4)
+pantalla_resultados.config(background="GREEN", highlightcolor="GREEN", fg="BLACK", justify="right", width=25)
 
-pantalla_operaciones = Entry(miFrame,
-                             textvariable=variable_pantalla_operaciones)  # esto es lo que hace que funcionen los botones
+# esto es lo que hace que funcionen los botones
+pantalla_operaciones = Entry(miFrame, textvariable=variable_pantalla_operaciones)
 # columnspan me permite que se ubiquen los numeros a lo ancho de la caja
-pantalla_operaciones.grid(row=2, column=1, padx=5, pady=5, rowspan=1, columnspan=4)
-pantalla_operaciones.config(background="GREEN", fg="BLACK", justify="right", width=25, )  # colores
-
-# PANTALLA______________________________________________________________________
-print("Interface ok")
-print("miframe,perfeto ,teclado pulsado perfecto")
+pantalla_operaciones.grid(row=2, column=1, padx=5, pady=0, rowspan=1, columnspan=4)
+pantalla_operaciones.config(background="GREEN", highlightcolor="GREEN", fg="BLACK", justify="right", width=25)
 
 
 # FUNCIONES:......................................................................
@@ -82,8 +78,14 @@ def boton_presionado(caracter):
     global operador
     global resultado
 
-    if caracter in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-        variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
+    if caracter in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "(", ")"]:
+        if variable_pantalla_operaciones.get() == "0":
+            if caracter != ".":
+                variable_pantalla_operaciones.set(caracter)
+            else:
+                variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
+        else:
+            variable_pantalla_operaciones.set(variable_pantalla_operaciones.get() + caracter)
     elif caracter in ["/", "x", "+", "-", "√", ",", "%", "**", "(", ")"]:
         if numero_1:
             pass
@@ -97,6 +99,10 @@ def boton_presionado(caracter):
             numero_2 = 0
         else:
             numero_2 = float(variable_pantalla_operaciones.get())
+
+
+    elif caracter == "(" and caracter == ")":  ####
+        variable_pantalla_operaciones.set(caracter)  #####
 
         resultado = calcular_operacion(numero_1=numero_1, numero_2=numero_2, operacion=operador)
         numero_1 = resultado
@@ -118,7 +124,6 @@ def borrar_digito():
 
 # LIMPIAR PANTALLA:
 def reset_pantalla_c():
-    # TODO: esta quedando un cero a la izquierda luego de usar este boton. Arreglar.
     variable_pantalla_operaciones.set("0")
 
 
@@ -224,7 +229,7 @@ boton_resultado = Button(miFrame, text="=", bg=color_boton, width=3, height=alto
                          command=lambda: boton_presionado(caracter="="))
 boton_resultado.grid(row=8, column=3, columnspan=1)
 boton_ce = Button(miFrame, text="CE", bg=color_boton, width=3, height=alto_boton,
-                         command=lambda: reset_pantalla_ce())
+                  command=lambda: reset_pantalla_ce())
 boton_ce.grid(row=8, column=4, columnspan=1)
 
 # fila 9 ___________________________________________________________________________________________________________
