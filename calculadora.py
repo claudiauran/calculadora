@@ -40,19 +40,10 @@ pantalla_operaciones.config(background="GREEN", highlightcolor="GREEN", fg="BLAC
 
 # FUNCIONES:......................................................................
 class Calculadora:
-    # Variables importantes
-    resetear_pantalla = False  # Bool, para borrar todo lo que haya en pantalla
-
     operador = ""  # String, para guardar el simbolo de la operacion aritmetica
     numero_1 = 0
     numero_2 = 0
     resultado = 0  # Float, el resultado numerico de las operaciones aritmeticas
-
-    def __init__(self):
-        self.returnedVariable = None
-
-    def return_variable(self, x):
-        self.returnedVariable = x
 
     def cambiar_contenidos_pantalla(self):
         variable_pantalla_resultados.set(variable_pantalla_operaciones.get())
