@@ -94,7 +94,6 @@ class Calculadora:
             self.resultado = sqrt(self.numero_1)
 
     def boton_presionado(self, caracter):
-        # TODO: quitar la dependencia en variables global.
         if caracter in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "(", ")"]:
             if variable_pantalla_operaciones.get() == "0":
                 if caracter != ".":
